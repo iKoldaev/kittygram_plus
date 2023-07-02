@@ -14,11 +14,26 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='cat',
             name='color',
-            field=models.CharField(choices=[('Gray', 'Серый'), ('Black', 'Чёрный'), ('White', 'Белый'), ('Ginger', 'Рыжий'), ('Mixed', 'Смешанный')], max_length=16),
+            field=models.CharField(
+                choices=[
+                    ('Gray', 'Серый'),
+                    ('Black', 'Чёрный'),
+                    ('White', 'Белый'),
+                    ('Ginger', 'Рыжий'),
+                    ('Mixed', 'Смешанный')
+                ],
+                max_length=16
+            ),
         ),
         migrations.AlterField(
             model_name='cat',
             name='owner',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='cats', to='cats.owner'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='cats',
+                to='cats.owner'
+            ),
         ),
     ]

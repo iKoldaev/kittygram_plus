@@ -2,12 +2,20 @@ import datetime as dt
 # import webcolors
 
 from rest_framework import serializers
+# from djoser.serializers import UserSerializer
 
 from .models import Achievement, AchievementCat, Cat, Owner
 from . import constants
 
 
+"""class CustomUserSerializer(UserSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'id', 'username', 'first_name', 'last_name')"""
+
+
 """class Hex2NameColor(serializers.Field):
+
     # При чтении данных ничего не меняем - просто возвращаем как есть
     def to_representation(self, value):
         return value
@@ -32,10 +40,10 @@ class AchievementSerializer(serializers.ModelSerializer):
 
 
 class CatSerializer(serializers.ModelSerializer):
-    # owner = serializers.StringRelatedField(read_only=True)
+    owner = serializers.StringRelatedField(read_only=True)
     achievements = AchievementSerializer(many=True, required=False)
     age = serializers.SerializerMethodField()
-    color = color = serializers.ChoiceField(choices=constants.CHOICES)
+    color = serializers.ChoiceField(choices=constants.CHOICES)
 
     class Meta:
         model = Cat
@@ -55,7 +63,6 @@ class CatSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Если в исходном запросе не было поля achievements
         if 'achievements' not in self.initial_data:
-            # То создаём запись о котике без его достижений
             cat = Cat.objects.create(**validated_data)
             return cat
         # Уберем список достижений из словаря validated_data
@@ -81,6 +88,14 @@ class CatSerializer(serializers.ModelSerializer):
                 cat=cat
             )
         return cat
+
+
+class CatListSerializer(serializers.ModelSerializer):
+    color = serializers.ChoiceField(choices=constants.CHOICES)
+
+    class Meta:
+        model = Cat
+        fields = ('id', 'name', 'color')
 
 
 class OwnerSerializer(serializers.ModelSerializer):
